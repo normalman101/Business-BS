@@ -4,6 +4,7 @@ classDiagram
         class IEntity {
             <<Interface>>
             #Guid _id
+            #GetId() Guid
         }
 
         class AccountType {
@@ -43,7 +44,16 @@ classDiagram
     IEntity <|-- Account
 ```
 
+Интерфейс **IEntity** — используется для задания контракта по обязательному хранению свойства-идентификатора у наследника.
+
+Перечисление **AccountType** — используется для задания лица счета.
+
+Класс **Transaction** — используется для создания транзакции дохода или расхода.
+
+Класс **Account** — используется для создания счёта.
+
 ```mermaid
+classDiagram
     namespace Service {
         class AnalyticsService {
             +CalculateMonthlyIncome(Account account, uint year, uint monthNumber) decimal
@@ -54,3 +64,5 @@ classDiagram
         }
     }
 ```
+
+Класс **AnalyticsService** — используется для аналитики доходов счёта.
