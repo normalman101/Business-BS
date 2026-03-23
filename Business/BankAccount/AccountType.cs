@@ -1,3 +1,7 @@
 ﻿namespace Business.BankAccount;
 
-public enum AccountType {  }
+public enum AccountType
+{
+    Individual,
+    LegalEntity
+}
