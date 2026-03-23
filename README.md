@@ -38,7 +38,7 @@ classDiagram
             +AddExpense(Transaction) void
         }
     }
-    AccountType <--* Account
+    AccountType <--* Transaction
     IEntity <|-- Transaction
     IEntity <|-- Account
 
