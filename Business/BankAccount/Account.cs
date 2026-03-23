@@ -7,11 +7,19 @@ public class Account : IEntity
     public HashSet<Transaction> Incomes { get; } = [];
     public HashSet<Transaction> Expenses { get; } = [];
 
+    /// <summary>
+    /// Добавляет доход
+    /// </summary>
+    /// <param name="transaction">транзакция дохода</param> 
     public void AddIncome(Transaction transaction)
     {
         Incomes.Add(transaction);
     }
 
+    /// <summary>
+    /// Добавляет расход
+    /// </summary>
+    /// <param name="transaction">транзакция расхода</param> 
     public void AddExpense(Transaction transaction)
     {
         Expenses.Add(transaction);
