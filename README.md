@@ -41,8 +41,9 @@ classDiagram
     AccountType <--* Transaction
     IEntity <|-- Transaction
     IEntity <|-- Account
+```
 
-
+```mermaid
     namespace Service {
         class AnalyticsService {
             +CalculateMonthlyIncome(Account account, uint year, uint monthNumber) decimal
