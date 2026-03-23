@@ -1,11 +1,29 @@
 ﻿namespace Business.BankAccount;
 
-public class Account : IEntity
+/// <summary>
+/// Класс, описывающий счёт
+/// </summary>
+/// <param name="accountType">тип счёта</param>
+public class Account(AccountType accountType) : IEntity
 {
+    /// <summary>
+    /// Идентификатор счёта
+    /// </summary>
     public Guid Id { get; init; } = Guid.CreateVersion7();
-    public decimal CurrentBalance { get; } = 0;
-    public HashSet<Transaction> Incomes { get; } = [];
-    public HashSet<Transaction> Expenses { get; } = [];
+    /// <summary>
+    /// Тип счёта
+    /// </summary>
+    public AccountType AccountType { get; } = accountType; 
+    /// <summary>
+    /// Текущий баланс
+    /// </summary>
+    public decimal CurrentBalance { get; private set; } = 0m;
+
+    private readonly HashSet<Transaction> _incomes = [];
+    /// <summary>
+    /// Транзакции прибыли
+    /// </summary>
+    public HashSet<Transaction> Incomes { get => _incomes.ToHashSet(); }
 
     /// <summary>
     /// Добавляет доход
@@ -14,14 +32,6 @@ public class Account : IEntity
     public void AddIncome(Transaction transaction)
     {
         Incomes.Add(transaction);
-    }
-
-    /// <summary>
-    /// Добавляет расход
-    /// </summary>
-    /// <param name="transaction">транзакция расхода</param> 
-    public void AddExpense(Transaction transaction)
-    {
-        Expenses.Add(transaction);
+        CurrentBalance += transaction.MoneyAmount;
     }
 }
