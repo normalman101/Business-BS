@@ -1,4 +1,6 @@
-﻿namespace Business.BankAccount;
+﻿using Business.BankAccount;
+
+namespace Business.Service;
 
 public class AnalyticsService
 {
