@@ -8,13 +8,14 @@ public class Transaction : IEntity
     /// <summary>
     /// Конструктор класса
     /// </summary>
-    /// <param name="debitedAccountId">идентификатор списывающего счёта</param>
+    /// <param name="debitedAccount">Списывающий счёт</param>
     /// <param name="moneyAmount">сумма денег</param>
     /// <exception cref="Exception">вызывается, когда значение moneyAmount равен нулю</exception>
-    public Transaction(Guid debitedAccountId, decimal moneyAmount)
+    public Transaction(Account debitedAccount, decimal moneyAmount)
     {
         Id = Guid.CreateVersion7();
-        DebitedAccountId = debitedAccountId;
+        DebitedAccountId = debitedAccount.Id;
+        AccountType = debitedAccount.AccountType;
         Date = DateOnly.FromDateTime(DateTime.Today);
         MoneyAmount = moneyAmount != 0m ? moneyAmount : throw new Exception("Can't make the transaction when money amount is null");
     }
@@ -27,6 +28,10 @@ public class Transaction : IEntity
     /// Идентификатор списывающего счёта
     /// </summary>
     public Guid DebitedAccountId { get; }
+    /// <summary>
+    /// Лицо
+    /// </summary>
+    public AccountType AccountType { get; }
     /// <summary>
     /// Дата транзакции
     /// </summary>
