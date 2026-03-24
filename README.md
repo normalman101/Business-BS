@@ -1,12 +1,14 @@
 ```mermaid
 classDiagram
-    namespace BankAccount {
-        class IEntity {
-            <<Interface>>
-            #Guid _id
-            #GetId() Guid
-        }
+    class IEntity {
+        <<Interface>>
+        #Guid _id
+        #GetId() Guid
+    }
+    IEntity <|.. Transaction
+    IEntity <|.. Account
 
+    namespace BankAccount {
         class AccountType {
             <<Enum>>
             +Individual
@@ -14,34 +16,41 @@ classDiagram
         }
 
         class Transaction {
-            -AccountType _accountType_
             -DateOnly _date
-            -decimal _total
-            -Guid _accountTransactionId
-            +Transaction(DateOnly date, decimal total, Guid accountTransactionId) void
+            -decimal _moneyAmount
+            -Guid _debitedAccountId
+            +Transaction(Guid debitedAccountId, decimal total) void
             +GetId() Guid
-            +GetAccountType() AccountType
             +GetDate() DateOnly
-            +GetTotal() decimal
-            +GetAccountTransactionId() Guid
+            +GetMoneyAmount() decimal
+            +GetDebitedAccountId() Guid
         }
 
         class Account {
+            -AccountType _accountType
             -decimal _currentBalance
             -HashSet~Transaction~ _incomes
-            -HashSet~Transaction~ _expenses
-            +Account() void
+            +Account(AccountType accountType) void
             +GetId() Guid
+            +GetAccountType() AccountType
             +GetCurrentBalance() decimal
             +GetIncomes() HashSet~Transaction~
-            +GetExpenses() HashSet~Transaction~
             +AddIncome(Transaction transaction) void
-            +AddExpense(Transaction transaction) void
         }
     }
-    AccountType <--* Transaction
-    IEntity <|-- Transaction
-    IEntity <|-- Account
+    AccountType <--* Account
+
+
+    namespace Service {
+        class AnalyticsService {
+            +CalculateMonthlyGrossIncome(Account account, uint year, uint monthNumber) decimal
+            +CalculateMonthlyNetIncome(Account account, uint year, uint monthNumber) decimal
+            +CalculateMonthlyIndividualTax(Account account, uint year, uint monthNumber) decimal
+            +CalculateLegalEntityTax(Account account, uint year, uint monthNumber) decimal
+            +CalculateOverallTax(Account account, uint year, uint monthNumber) decimal
+        }
+    }
+    Account <-- AnalyticsService
 ```
 
 Интерфейс **IEntity** — используется для задания соблюдения контракта у наследника.
@@ -54,19 +63,6 @@ classDiagram
 Методы:
 - **AddIncome(Transaction transaction)** — добавляет доход.
 - **AddExpense(Transaction transaction)** — добавляет расход.
-
-```mermaid
-classDiagram
-    namespace Service {
-        class AnalyticsService {
-            +CalculateMonthlyIncome(Account account, uint year, uint monthNumber) decimal
-            +CalculateIndividualAccountTax(Account account) decimal
-            +CalculateLegalEntityAccountTax(Account account) decimal
-            +CalculateTotalTax(Account account) decimal
-            +CalculateTotalIncome(Account account) decimal
-        }
-    }
-```
 
 Класс **AnalyticsService** — используется для аналитики доходов счёта.
 Методы:
